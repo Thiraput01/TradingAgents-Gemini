@@ -702,45 +702,39 @@ def get_YFin_data(
 
 
 def get_stock_news_google(ticker, curr_date):
+    prompt = f"Can you search Stock News for {ticker} from 7 days before {curr_date} to {curr_date}? Make sure you only get the data posted during that period."
     config = get_config()
-    genai.configure(api_key=config.get("GOOGLE_API_KEY"))
-
-    model = genai.GenerativeModel(
-        model_name=config["quick_think_llm"], tools="google_search_retrieval"
+    client = genai.Client(api_key=config.get("GOOGLE_API_KEY"))
+    response = client.models.generate_content(
+        model=config["quick_think_llm"],
+        contents=prompt,
+        config={"tools": [{"google_search": {}}]},
     )
-
-    prompt = f"Can you search Social Media for {ticker} from 7 days before {curr_date} to {curr_date}? Make sure you only get the data posted during that period."
-
-    response = model.generate_content(prompt)
 
     return response.text
 
 
 def get_global_news_google(curr_date):
+    prompt = f"Can you search global or macroeconomics news from 7 days before {curr_date} to {curr_date}? Make sure you only get the data posted during that period."
     config = get_config()
-    genai.configure(api_key=config.get("GOOGLE_API_KEY"))
-
-    model = genai.GenerativeModel(
-        model_name=config["quick_think_llm"], tools="google_search_retrieval"
+    client = genai.Client(api_key=config.get("GOOGLE_API_KEY"))
+    response = client.models.generate_content(
+        model=config["quick_think_llm"],
+        contents=prompt,
+        config={"tools": [{"google_search": {}}]},
     )
-
-    prompt = f"Can you search global or macroeconomics news from 7 days before {curr_date} to {curr_date} that would be informative for trading purposes? Make sure you only get the data posted during that period."
-
-    response = model.generate_content(prompt)
 
     return response.text
 
 
 def get_fundamentals_google(ticker, curr_date):
-    config = get_config()
-    genai.configure(api_key=config.get("GOOGLE_API_KEY"))
-
-    model = genai.GenerativeModel(
-        model_name=config["quick_think_llm"], tools="google_search_retrieval"
-    )
-
     prompt = f"Can you search Fundamental for discussions on {ticker} during of the month before {curr_date} to the month of {curr_date}. Make sure you only get the data posted during that period. List as a table, with PE/PS/Cash flow/ etc"
-
-    response = model.generate_content(prompt)
+    config = get_config()
+    client = genai.Client(api_key=config.get("GOOGLE_API_KEY"))
+    response = client.models.generate_content(
+        model=config["quick_think_llm"],
+        contents=prompt,
+        config={"tools": [{"google_search": {}}]},
+    )
 
     return response.text
