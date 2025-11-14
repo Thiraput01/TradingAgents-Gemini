@@ -1,6 +1,7 @@
 from langchain_core.messages import AIMessage
 import time
 import json
+from tradingagents.agents.utils.agent_utils import extract_content_string
 
 
 def create_bull_researcher(llm, memory):
@@ -10,10 +11,10 @@ def create_bull_researcher(llm, memory):
         bull_history = investment_debate_state.get("bull_history", "")
 
         current_response = investment_debate_state.get("current_response", "")
-        market_research_report = state["market_report"]
-        sentiment_report = state["sentiment_report"]
-        news_report = state["news_report"]
-        fundamentals_report = state["fundamentals_report"]
+        market_research_report = extract_content_string(state["market_report"])
+        sentiment_report = extract_content_string(state["sentiment_report"])
+        news_report = extract_content_string(state["news_report"])
+        fundamentals_report = extract_content_string(state["fundamentals_report"])
 
         curr_situation = f"{market_research_report}\n\n{sentiment_report}\n\n{news_report}\n\n{fundamentals_report}"
         past_memories = memory.get_memories(curr_situation, n_matches=2)

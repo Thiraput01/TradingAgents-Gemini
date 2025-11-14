@@ -24,6 +24,7 @@ from cli.models import AnalystType
 from cli.utils import *
 from tradingagents.default_config import DEFAULT_CONFIG
 from tradingagents.graph.trading_graph import TradingAgentsGraph
+from tradingagents.agents.utils.agent_utils import extract_content_string
 
 print("DEFAULT CONFIG:", DEFAULT_CONFIG)
 console = Console()
@@ -530,7 +531,7 @@ def display_complete_report(final_state):
     if final_state.get("market_report"):
         analyst_reports.append(
             Panel(
-                Markdown(final_state["market_report"]),
+                Markdown(extract_content_string(final_state["market_report"])),
                 title="Market Analyst",
                 border_style="blue",
                 padding=(1, 2),
@@ -541,7 +542,7 @@ def display_complete_report(final_state):
     if final_state.get("sentiment_report"):
         analyst_reports.append(
             Panel(
-                Markdown(final_state["sentiment_report"]),
+                Markdown(extract_content_string(final_state["sentiment_report"])),
                 title="Social Analyst",
                 border_style="blue",
                 padding=(1, 2),
@@ -552,7 +553,7 @@ def display_complete_report(final_state):
     if final_state.get("news_report"):
         analyst_reports.append(
             Panel(
-                Markdown(final_state["news_report"]),
+                Markdown(extract_content_string(final_state["news_report"])),
                 title="News Analyst",
                 border_style="blue",
                 padding=(1, 2),
@@ -563,7 +564,7 @@ def display_complete_report(final_state):
     if final_state.get("fundamentals_report"):
         analyst_reports.append(
             Panel(
-                Markdown(final_state["fundamentals_report"]),
+                Markdown(extract_content_string(final_state["fundamentals_report"])),
                 title="Fundamentals Analyst",
                 border_style="blue",
                 padding=(1, 2),
@@ -589,7 +590,7 @@ def display_complete_report(final_state):
         if debate_state.get("bull_history"):
             research_reports.append(
                 Panel(
-                    Markdown(debate_state["bull_history"]),
+                    Markdown(extract_content_string(debate_state["bull_history"])),
                     title="Bull Researcher",
                     border_style="blue",
                     padding=(1, 2),
@@ -600,7 +601,7 @@ def display_complete_report(final_state):
         if debate_state.get("bear_history"):
             research_reports.append(
                 Panel(
-                    Markdown(debate_state["bear_history"]),
+                    Markdown(extract_content_string(debate_state["bear_history"])),
                     title="Bear Researcher",
                     border_style="blue",
                     padding=(1, 2),
@@ -611,7 +612,7 @@ def display_complete_report(final_state):
         if debate_state.get("judge_decision"):
             research_reports.append(
                 Panel(
-                    Markdown(debate_state["judge_decision"]),
+                    Markdown(extract_content_string(debate_state["judge_decision"])),
                     title="Research Manager",
                     border_style="blue",
                     padding=(1, 2),
@@ -633,7 +634,7 @@ def display_complete_report(final_state):
         console.print(
             Panel(
                 Panel(
-                    Markdown(final_state["trader_investment_plan"]),
+                    Markdown(extract_content_string(final_state["trader_investment_plan"])),
                     title="Trader",
                     border_style="blue",
                     padding=(1, 2),
@@ -653,7 +654,7 @@ def display_complete_report(final_state):
         if risk_state.get("risky_history"):
             risk_reports.append(
                 Panel(
-                    Markdown(risk_state["risky_history"]),
+                    Markdown(extract_content_string(risk_state["risky_history"])),
                     title="Aggressive Analyst",
                     border_style="blue",
                     padding=(1, 2),
@@ -664,7 +665,7 @@ def display_complete_report(final_state):
         if risk_state.get("safe_history"):
             risk_reports.append(
                 Panel(
-                    Markdown(risk_state["safe_history"]),
+                    Markdown(extract_content_string(risk_state["safe_history"])),
                     title="Conservative Analyst",
                     border_style="blue",
                     padding=(1, 2),
@@ -675,7 +676,7 @@ def display_complete_report(final_state):
         if risk_state.get("neutral_history"):
             risk_reports.append(
                 Panel(
-                    Markdown(risk_state["neutral_history"]),
+                    Markdown(extract_content_string(risk_state["neutral_history"])),
                     title="Neutral Analyst",
                     border_style="blue",
                     padding=(1, 2),
@@ -697,7 +698,7 @@ def display_complete_report(final_state):
             console.print(
                 Panel(
                     Panel(
-                        Markdown(risk_state["judge_decision"]),
+                        Markdown(extract_content_string(risk_state["judge_decision"])),
                         title="Portfolio Manager",
                         border_style="blue",
                         padding=(1, 2),
@@ -716,24 +717,7 @@ def update_research_team_status(status):
         message_buffer.update_agent_status(agent, status)
 
 
-def extract_content_string(content):
-    """Extract string content from various message formats."""
-    if isinstance(content, str):
-        return content
-    elif isinstance(content, list):
-        # Handle Anthropic's list format
-        text_parts = []
-        for item in content:
-            if isinstance(item, dict):
-                if item.get("type") == "text":
-                    text_parts.append(item.get("text", ""))
-                elif item.get("type") == "tool_use":
-                    text_parts.append(f"[Tool: {item.get('name', 'unknown')}]")
-            else:
-                text_parts.append(str(item))
-        return " ".join(text_parts)
-    else:
-        return str(content)
+
 
 
 def run_analysis():
@@ -896,7 +880,7 @@ def run_analysis():
                 # Analyst Team Reports
                 if "market_report" in chunk and chunk["market_report"]:
                     message_buffer.update_report_section(
-                        "market_report", chunk["market_report"]
+                        "market_report", extract_content_string(chunk["market_report"])
                     )
                     message_buffer.update_agent_status("Market Analyst", "completed")
                     # Set next analyst to in_progress
@@ -907,7 +891,7 @@ def run_analysis():
 
                 if "sentiment_report" in chunk and chunk["sentiment_report"]:
                     message_buffer.update_report_section(
-                        "sentiment_report", chunk["sentiment_report"]
+                        "sentiment_report", extract_content_string(chunk["sentiment_report"])
                     )
                     message_buffer.update_agent_status("Social Analyst", "completed")
                     # Set next analyst to in_progress
@@ -918,7 +902,7 @@ def run_analysis():
 
                 if "news_report" in chunk and chunk["news_report"]:
                     message_buffer.update_report_section(
-                        "news_report", chunk["news_report"]
+                        "news_report", extract_content_string(chunk["news_report"])
                     )
                     message_buffer.update_agent_status("News Analyst", "completed")
                     # Set next analyst to in_progress
@@ -929,7 +913,7 @@ def run_analysis():
 
                 if "fundamentals_report" in chunk and chunk["fundamentals_report"]:
                     message_buffer.update_report_section(
-                        "fundamentals_report", chunk["fundamentals_report"]
+                        "fundamentals_report", extract_content_string(chunk["fundamentals_report"])
                     )
                     message_buffer.update_agent_status(
                         "Fundamentals Analyst", "completed"
@@ -956,7 +940,7 @@ def run_analysis():
                             # Update research report with bull's latest analysis
                             message_buffer.update_report_section(
                                 "investment_plan",
-                                f"### Bull Researcher Analysis\n{latest_bull}",
+                                extract_content_string(f"### Bull Researcher Analysis\n{latest_bull}"),
                             )
 
                     # Update Bear Researcher status and report
@@ -971,7 +955,7 @@ def run_analysis():
                             # Update research report with bear's latest analysis
                             message_buffer.update_report_section(
                                 "investment_plan",
-                                f"{message_buffer.report_sections['investment_plan']}\n\n### Bear Researcher Analysis\n{latest_bear}",
+                                extract_content_string(f"{message_buffer.report_sections['investment_plan']}\n\n### Bear Researcher Analysis\n{latest_bear}"),
                             )
 
                     # Update Research Manager status and final decision
@@ -988,7 +972,7 @@ def run_analysis():
                         # Update research report with final decision
                         message_buffer.update_report_section(
                             "investment_plan",
-                            f"{message_buffer.report_sections['investment_plan']}\n\n### Research Manager Decision\n{debate_state['judge_decision']}",
+                            extract_content_string(f"{message_buffer.report_sections['investment_plan']}\n\n### Research Manager Decision\n{debate_state['judge_decision']}"),
                         )
                         # Mark all research team members as completed
                         update_research_team_status("completed")
@@ -1003,7 +987,7 @@ def run_analysis():
                     and chunk["trader_investment_plan"]
                 ):
                     message_buffer.update_report_section(
-                        "trader_investment_plan", chunk["trader_investment_plan"]
+                        "trader_investment_plan", extract_content_string(chunk["trader_investment_plan"])
                     )
                     # Set first risk analyst to in_progress
                     message_buffer.update_agent_status("Risky Analyst", "in_progress")
@@ -1027,7 +1011,7 @@ def run_analysis():
                         # Update risk report with risky analyst's latest analysis only
                         message_buffer.update_report_section(
                             "final_trade_decision",
-                            f"### Risky Analyst Analysis\n{risk_state['current_risky_response']}",
+                            extract_content_string(f"### Risky Analyst Analysis\n{risk_state['current_risky_response']}"),
                         )
 
                     # Update Safe Analyst status and report
@@ -1045,7 +1029,7 @@ def run_analysis():
                         # Update risk report with safe analyst's latest analysis only
                         message_buffer.update_report_section(
                             "final_trade_decision",
-                            f"### Safe Analyst Analysis\n{risk_state['current_safe_response']}",
+                            extract_content_string(f"### Safe Analyst Analysis\n{risk_state['current_safe_response']}"),
                         )
 
                     # Update Neutral Analyst status and report
@@ -1063,7 +1047,7 @@ def run_analysis():
                         # Update risk report with neutral analyst's latest analysis only
                         message_buffer.update_report_section(
                             "final_trade_decision",
-                            f"### Neutral Analyst Analysis\n{risk_state['current_neutral_response']}",
+                            extract_content_string(f"### Neutral Analyst Analysis\n{risk_state['current_neutral_response']}"),
                         )
 
                     # Update Portfolio Manager status and final decision
@@ -1078,7 +1062,7 @@ def run_analysis():
                         # Update risk report with final decision only
                         message_buffer.update_report_section(
                             "final_trade_decision",
-                            f"### Portfolio Manager Decision\n{risk_state['judge_decision']}",
+                            extract_content_string(f"### Portfolio Manager Decision\n{risk_state['judge_decision']}"),
                         )
                         # Mark risk analysts as completed
                         message_buffer.update_agent_status("Risky Analyst", "completed")
@@ -1110,7 +1094,7 @@ def run_analysis():
         # Update final report sections
         for section in message_buffer.report_sections.keys():
             if section in final_state:
-                message_buffer.update_report_section(section, final_state[section])
+                message_buffer.report_sections[section] = extract_content_string(final_state[section])
 
         # Display the complete final report
         display_complete_report(final_state)

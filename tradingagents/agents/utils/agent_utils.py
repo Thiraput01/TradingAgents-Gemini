@@ -35,6 +35,26 @@ def create_msg_delete():
     return delete_messages
 
 
+def extract_content_string(content):
+    """Extract string content from various message formats."""
+    if isinstance(content, str):
+        return content
+    elif isinstance(content, list):
+        # Handle list of content blocks
+        text_parts = []
+        for item in content:
+            if isinstance(item, dict):
+                if item.get("type") == "text":
+                    text_parts.append(item.get("text", ""))
+                elif item.get("type") == "tool_use":
+                    text_parts.append(f"[Tool: {item.get('name', 'unknown')}]")
+            else:
+                text_parts.append(str(item))
+        return " ".join(text_parts)
+    else:
+        return str(content)
+
+
 class Toolkit:
     _config = DEFAULT_CONFIG.copy()
 

@@ -1,16 +1,17 @@
 import functools
 import time
 import json
+from tradingagents.agents.utils.agent_utils import extract_content_string
 
 
 def create_trader(llm, memory):
     def trader_node(state, name):
         company_name = state["company_of_interest"]
         investment_plan = state["investment_plan"]
-        market_research_report = state["market_report"]
-        sentiment_report = state["sentiment_report"]
-        news_report = state["news_report"]
-        fundamentals_report = state["fundamentals_report"]
+        market_research_report = extract_content_string(state["market_report"])
+        sentiment_report = extract_content_string(state["sentiment_report"])
+        news_report = extract_content_string(state["news_report"])
+        fundamentals_report = extract_content_string(state["fundamentals_report"])
 
         curr_situation = f"{market_research_report}\n\n{sentiment_report}\n\n{news_report}\n\n{fundamentals_report}"
         past_memories = memory.get_memories(curr_situation, n_matches=2)

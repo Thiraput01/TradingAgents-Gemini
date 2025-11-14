@@ -1,14 +1,15 @@
 import time
 import json
+from tradingagents.agents.utils.agent_utils import extract_content_string
 
 
 def create_research_manager(llm, memory):
     def research_manager_node(state) -> dict:
         history = state["investment_debate_state"].get("history", "")
-        market_research_report = state["market_report"]
-        sentiment_report = state["sentiment_report"]
-        news_report = state["news_report"]
-        fundamentals_report = state["fundamentals_report"]
+        market_research_report = extract_content_string(state["market_report"])
+        sentiment_report = extract_content_string(state["sentiment_report"])
+        news_report = extract_content_string(state["news_report"])
+        fundamentals_report = extract_content_string(state["fundamentals_report"])
 
         investment_debate_state = state["investment_debate_state"]
 

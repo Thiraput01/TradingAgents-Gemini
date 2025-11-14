@@ -21,9 +21,11 @@ class FinancialSituationMemory:
     def get_embedding(self, text):
         """Get Gemini embedding for a text"""
         result = self.genai_client.models.embed_content(
-            model=self.embedding_model, content=text, task_type="retrieval_document"
+            model=self.embedding_model,
+            contents=text,
+            config={"task_type": "retrieval_document"},
         )
-        return result["embedding"]
+        return result.embeddings[0].values
 
     def add_situations(self, situations_and_advice):
         """Add financial situations and their corresponding advice. Parameter is a list of tuples (situation, rec)"""
