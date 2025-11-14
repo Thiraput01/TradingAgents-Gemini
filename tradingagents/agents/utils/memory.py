@@ -5,8 +5,9 @@ from google import genai
 
 class FinancialSituationMemory:
     def __init__(self, name, config):
-        # Configure Gemini API
-        genai.configure(api_key=config.get("GOOGLE_API_KEY"))
+        # Initialize genai client
+        # The API key will be picked up from GOOGLE_API_KEY environment variable
+        self.genai_client = genai.Client()
 
         # Set embedding model based on config
         if "embedding_model" in config:
@@ -19,7 +20,7 @@ class FinancialSituationMemory:
 
     def get_embedding(self, text):
         """Get Gemini embedding for a text"""
-        result = genai.embed_content(
+        result = self.genai_client.models.embed_content(
             model=self.embedding_model, content=text, task_type="retrieval_document"
         )
         return result["embedding"]
