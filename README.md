@@ -27,6 +27,8 @@
 
 # TradingAgents: Multi-Agents LLM Financial Trading Framework 
 
+This repository is a fork of [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) and has been adapted to use Google Gemini environments instead of OpenAI.
+
 > 🎉 **TradingAgents** officially released! We have received numerous inquiries about the work, and we would like to express our thanks for the enthusiasm in our community.
 >
 > So we decided to fully open-source the framework. Looking forward to building impactful projects with you!
