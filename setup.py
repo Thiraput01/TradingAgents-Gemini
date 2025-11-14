@@ -2,7 +2,7 @@
 Setup script for the TradingAgents package.
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="tradingagents",
@@ -13,10 +13,11 @@ setup(
     url="https://github.com/TauricResearch",
     packages=find_packages(),
     install_requires=[
+        "langgraph>=0.1.0",
         "langchain>=0.1.0",
-        "langchain-openai>=0.0.2",
-        "langchain-experimental>=0.0.40",
-        "langgraph>=0.0.20",
+        "google-generativeai>=0.8.0,<0.9.0",
+        "langchain-google-genai>=2.0.0,<4.0.0",
+        "langchain-experimental>=0.0.49",
         "numpy>=1.24.0",
         "pandas>=2.0.0",
         "praw>=7.7.0",

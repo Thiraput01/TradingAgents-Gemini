@@ -1,8 +1,9 @@
 # TradingAgents/graph/setup.py
 
-from typing import Dict, Any
-from langchain_openai import ChatOpenAI
-from langgraph.graph import END, StateGraph, START
+from typing import Any, Dict
+
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode
 
 from tradingagents.agents import *
@@ -17,8 +18,8 @@ class GraphSetup:
 
     def __init__(
         self,
-        quick_thinking_llm: ChatOpenAI,
-        deep_thinking_llm: ChatOpenAI,
+        quick_thinking_llm: ChatGoogleGenerativeAI,
+        deep_thinking_llm: ChatGoogleGenerativeAI,
         toolkit: Toolkit,
         tool_nodes: Dict[str, ToolNode],
         bull_memory,
@@ -150,7 +151,7 @@ class GraphSetup:
 
             # Connect to next analyst or to Bull Researcher if this is the last analyst
             if i < len(selected_analysts) - 1:
-                next_analyst = f"{selected_analysts[i+1].capitalize()} Analyst"
+                next_analyst = f"{selected_analysts[i + 1].capitalize()} Analyst"
                 workflow.add_edge(current_clear, next_analyst)
             else:
                 workflow.add_edge(current_clear, "Bull Researcher")

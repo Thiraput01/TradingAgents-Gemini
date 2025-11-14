@@ -1,19 +1,21 @@
-from typing import Annotated, Dict
-from .reddit_utils import fetch_top_from_category
-from .yfin_utils import *
-from .stockstats_utils import *
-from .googlenews_utils import *
-from .finnhub_utils import get_data_in_range
-from dateutil.relativedelta import relativedelta
-from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
 import json
 import os
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+from typing import Annotated, Dict
+
+import google.generativeai as genai
 import pandas as pd
-from tqdm import tqdm
 import yfinance as yf
-from openai import OpenAI
-from .config import get_config, set_config, DATA_DIR
+from dateutil.relativedelta import relativedelta
+from tqdm import tqdm
+
+from .config import DATA_DIR, get_config, set_config
+from .finnhub_utils import get_data_in_range
+from .googlenews_utils import *
+from .reddit_utils import fetch_top_from_category
+from .stockstats_utils import *
+from .yfin_utils import *
 
 
 def get_finnhub_news(
@@ -428,7 +430,6 @@ def get_stock_stats_indicators_window(
     look_back_days: Annotated[int, "how many days to look back"],
     online: Annotated[bool, "to fetch data online or offline"],
 ) -> str:
-
     best_ind_params = {
         # Moving Averages
         "close_50_sma": (
@@ -563,7 +564,6 @@ def get_stockstats_indicator(
     ],
     online: Annotated[bool, "to fetch data online or offline"],
 ) -> str:
-
     curr_date = datetime.strptime(curr_date, "%Y-%m-%d")
     curr_date = curr_date.strftime("%Y-%m-%d")
 
@@ -630,7 +630,6 @@ def get_YFin_data_online(
     start_date: Annotated[str, "Start date in yyyy-mm-dd format"],
     end_date: Annotated[str, "End date in yyyy-mm-dd format"],
 ):
-
     datetime.strptime(start_date, "%Y-%m-%d")
     datetime.strptime(end_date, "%Y-%m-%d")
 
@@ -704,104 +703,44 @@ def get_YFin_data(
 
 def get_stock_news_openai(ticker, curr_date):
     config = get_config()
-    client = OpenAI(base_url=config["backend_url"])
+    genai.configure(api_key=config.get("GOOGLE_API_KEY"))
 
-    response = client.responses.create(
-        model=config["quick_think_llm"],
-        input=[
-            {
-                "role": "system",
-                "content": [
-                    {
-                        "type": "input_text",
-                        "text": f"Can you search Social Media for {ticker} from 7 days before {curr_date} to {curr_date}? Make sure you only get the data posted during that period.",
-                    }
-                ],
-            }
-        ],
-        text={"format": {"type": "text"}},
-        reasoning={},
-        tools=[
-            {
-                "type": "web_search_preview",
-                "user_location": {"type": "approximate"},
-                "search_context_size": "low",
-            }
-        ],
-        temperature=1,
-        max_output_tokens=4096,
-        top_p=1,
-        store=True,
+    model = genai.GenerativeModel(
+        model_name=config["quick_think_llm"], tools="google_search_retrieval"
     )
 
-    return response.output[1].content[0].text
+    prompt = f"Can you search Social Media for {ticker} from 7 days before {curr_date} to {curr_date}? Make sure you only get the data posted during that period."
+
+    response = model.generate_content(prompt)
+
+    return response.text
 
 
 def get_global_news_openai(curr_date):
     config = get_config()
-    client = OpenAI(base_url=config["backend_url"])
+    genai.configure(api_key=config.get("GOOGLE_API_KEY"))
 
-    response = client.responses.create(
-        model=config["quick_think_llm"],
-        input=[
-            {
-                "role": "system",
-                "content": [
-                    {
-                        "type": "input_text",
-                        "text": f"Can you search global or macroeconomics news from 7 days before {curr_date} to {curr_date} that would be informative for trading purposes? Make sure you only get the data posted during that period.",
-                    }
-                ],
-            }
-        ],
-        text={"format": {"type": "text"}},
-        reasoning={},
-        tools=[
-            {
-                "type": "web_search_preview",
-                "user_location": {"type": "approximate"},
-                "search_context_size": "low",
-            }
-        ],
-        temperature=1,
-        max_output_tokens=4096,
-        top_p=1,
-        store=True,
+    model = genai.GenerativeModel(
+        model_name=config["quick_think_llm"], tools="google_search_retrieval"
     )
 
-    return response.output[1].content[0].text
+    prompt = f"Can you search global or macroeconomics news from 7 days before {curr_date} to {curr_date} that would be informative for trading purposes? Make sure you only get the data posted during that period."
+
+    response = model.generate_content(prompt)
+
+    return response.text
 
 
 def get_fundamentals_openai(ticker, curr_date):
     config = get_config()
-    client = OpenAI(base_url=config["backend_url"])
+    genai.configure(api_key=config.get("GOOGLE_API_KEY"))
 
-    response = client.responses.create(
-        model=config["quick_think_llm"],
-        input=[
-            {
-                "role": "system",
-                "content": [
-                    {
-                        "type": "input_text",
-                        "text": f"Can you search Fundamental for discussions on {ticker} during of the month before {curr_date} to the month of {curr_date}. Make sure you only get the data posted during that period. List as a table, with PE/PS/Cash flow/ etc",
-                    }
-                ],
-            }
-        ],
-        text={"format": {"type": "text"}},
-        reasoning={},
-        tools=[
-            {
-                "type": "web_search_preview",
-                "user_location": {"type": "approximate"},
-                "search_context_size": "low",
-            }
-        ],
-        temperature=1,
-        max_output_tokens=4096,
-        top_p=1,
-        store=True,
+    model = genai.GenerativeModel(
+        model_name=config["quick_think_llm"], tools="google_search_retrieval"
     )
 
-    return response.output[1].content[0].text
+    prompt = f"Can you search Fundamental for discussions on {ticker} during of the month before {curr_date} to the month of {curr_date}. Make sure you only get the data posted during that period. List as a table, with PE/PS/Cash flow/ etc"
+
+    response = model.generate_content(prompt)
+
+    return response.text
