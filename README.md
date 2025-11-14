@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 You will need the FinnHub API for financial data. All of our code is implemented with the free tier.
 ```bash
-export FINNHUB_API_KEY=$YOUR_FINNHUB_API_KEY
+export ALPHA_VANTAGE_API_KEY=$ALPHA_VANTAGE_API_KEY
 ```
 
 You will need the Google API for all the agents.
@@ -44,9 +44,3 @@ You can try out the CLI directly by running:
 python -m cli.main
 ```
 You will see a screen where you can select your desired tickers, date, LLMs, research depth, etc.
-
-## Implementation Details
-
-We built TradingAgents with LangGraph to ensure flexibility and modularity. We utilize `gemini-2.5-pro` and `gemini-flash-latest` as our deep thinking and fast thinking LLMs for our experiments. However, for testing purposes, we recommend you use `gemini-flash-lite-latest` to save on costs as our framework makes **lots of** API calls.
-
-You can view the full list of configurations in `tradingagents/default_config.py`.
