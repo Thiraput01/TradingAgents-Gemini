@@ -1,6 +1,6 @@
 import chromadb
-import google.generativeai as genai
 from chromadb.config import Settings
+from google import genai
 
 
 class FinancialSituationMemory:

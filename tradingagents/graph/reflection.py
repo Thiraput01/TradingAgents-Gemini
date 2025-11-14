@@ -2,13 +2,13 @@
 
 from typing import Any, Dict
 
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.language_models import BaseChatModel
 
 
 class Reflector:
     """Handles reflection on decisions and updating memory."""
 
-    def __init__(self, quick_thinking_llm: ChatGoogleGenerativeAI):
+    def __init__(self, quick_thinking_llm: BaseChatModel):
         """Initialize the reflector with an LLM."""
         self.quick_thinking_llm = quick_thinking_llm
         self.reflection_system_prompt = self._get_reflection_prompt()

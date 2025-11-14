@@ -1,8 +1,8 @@
 # TradingAgents/graph/setup.py
 
-from typing import Any, Dict
+from typing import Dict
 
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.language_models import BaseChatModel
 from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode
 
@@ -18,8 +18,8 @@ class GraphSetup:
 
     def __init__(
         self,
-        quick_thinking_llm: ChatGoogleGenerativeAI,
-        deep_thinking_llm: ChatGoogleGenerativeAI,
+        quick_thinking_llm: BaseChatModel,
+        deep_thinking_llm: BaseChatModel,
         toolkit: Toolkit,
         tool_nodes: Dict[str, ToolNode],
         bull_memory,

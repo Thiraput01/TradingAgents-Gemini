@@ -55,17 +55,16 @@ class TradingAgentsGraph:
         )
 
         # Initialize LLMs
-        if self.config["llm_provider"].lower() == "google":
-            self.deep_thinking_llm = ChatGoogleGenerativeAI(
-                model=self.config["deep_think_llm"]
-            )
-            self.quick_thinking_llm = ChatGoogleGenerativeAI(
-                model=self.config["quick_think_llm"]
-            )
-        else:
+        if self.config["llm_provider"].lower() != "google":
             raise ValueError(
                 f"Unsupported LLM provider: {self.config['llm_provider']}. Only 'google' is supported."
             )
+        self.deep_thinking_llm = ChatGoogleGenerativeAI(
+            model=self.config["deep_think_llm"]
+        )
+        self.quick_thinking_llm = ChatGoogleGenerativeAI(
+            model=self.config["quick_think_llm"]
+        )
 
         self.toolkit = Toolkit(config=self.config)
 
@@ -126,7 +125,7 @@ class TradingAgentsGraph:
             "social": ToolNode(
                 [
                     # online tools
-                    self.toolkit.get_stock_news_openai,
+                    self.toolkit.get_stock_news_google,
                     # offline tools
                     self.toolkit.get_reddit_stock_info,
                 ]
@@ -134,7 +133,7 @@ class TradingAgentsGraph:
             "news": ToolNode(
                 [
                     # online tools
-                    self.toolkit.get_global_news_openai,
+                    self.toolkit.get_global_news_google,
                     self.toolkit.get_google_news,
                     # offline tools
                     self.toolkit.get_finnhub_news,
@@ -144,7 +143,7 @@ class TradingAgentsGraph:
             "fundamentals": ToolNode(
                 [
                     # online tools
-                    self.toolkit.get_fundamentals_openai,
+                    self.toolkit.get_fundamentals_google,
                     # offline tools
                     self.toolkit.get_finnhub_company_insider_sentiment,
                     self.toolkit.get_finnhub_company_insider_transactions,

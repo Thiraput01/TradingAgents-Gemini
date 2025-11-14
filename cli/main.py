@@ -463,10 +463,12 @@ def get_user_selections():
     )
     selected_research_depth = select_research_depth()
 
-    # Step 5: OpenAI backend
+    # Step 5: LLM Backend
     console.print(
-        create_question_box(
-            "Step 5: OpenAI backend", "Select which service to talk to"
+        Panel(
+            "[bold]Step 5: LLM Backend[/bold]\n[dim]This project is configured to use the Google Gemini environment.[/dim]",
+            border_style="blue",
+            padding=(1, 2),
         )
     )
     selected_llm_provider, backend_url = select_llm_provider()

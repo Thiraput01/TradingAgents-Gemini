@@ -119,9 +119,9 @@ You will also need the FinnHub API for financial data. All of our code is implem
 export FINNHUB_API_KEY=$YOUR_FINNHUB_API_KEY
 ```
 
-You will need the OpenAI API for all the agents.
+You will need the Google API for all the agents.
 ```bash
-export OPENAI_API_KEY=$YOUR_OPENAI_API_KEY
+export GOOGLE_API_KEY=$YOUR_GOOGLE_API_KEY
 ```
 
 ### CLI Usage
@@ -150,7 +150,7 @@ An interface will appear showing results as they load, letting you track the age
 
 ### Implementation Details
 
-We built TradingAgents with LangGraph to ensure flexibility and modularity. We utilize `o1-preview` and `gpt-4o` as our deep thinking and fast thinking LLMs for our experiments. However, for testing purposes, we recommend you use `o4-mini` and `gpt-4.1-mini` to save on costs as our framework makes **lots of** API calls.
+We built TradingAgents with LangGraph to ensure flexibility and modularity. We utilize `gemini-2.5-pro` and `gemini-flash-latest` as our deep thinking and fast thinking LLMs for our experiments. However, for testing purposes, we recommend you use `gemini-flash-lite-latest` to save on costs as our framework makes **lots of** API calls.
 
 ### Python Usage
 

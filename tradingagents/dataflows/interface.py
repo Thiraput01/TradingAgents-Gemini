@@ -4,10 +4,10 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from typing import Annotated, Dict
 
-import google.generativeai as genai
 import pandas as pd
 import yfinance as yf
 from dateutil.relativedelta import relativedelta
+from google import genai
 from tqdm import tqdm
 
 from .config import DATA_DIR, get_config, set_config
@@ -701,7 +701,7 @@ def get_YFin_data(
     return filtered_data
 
 
-def get_stock_news_openai(ticker, curr_date):
+def get_stock_news_google(ticker, curr_date):
     config = get_config()
     genai.configure(api_key=config.get("GOOGLE_API_KEY"))
 
@@ -716,7 +716,7 @@ def get_stock_news_openai(ticker, curr_date):
     return response.text
 
 
-def get_global_news_openai(curr_date):
+def get_global_news_google(curr_date):
     config = get_config()
     genai.configure(api_key=config.get("GOOGLE_API_KEY"))
 
@@ -731,7 +731,7 @@ def get_global_news_openai(curr_date):
     return response.text
 
 
-def get_fundamentals_openai(ticker, curr_date):
+def get_fundamentals_google(ticker, curr_date):
     config = get_config()
     genai.configure(api_key=config.get("GOOGLE_API_KEY"))
 

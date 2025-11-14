@@ -14,6 +14,7 @@ DEFAULT_CONFIG = {
     "quick_think_llm": "gemini-2.5-flash-latest",
     "backend_url": "https://generativelanguage.googleapis.com/v1",
     "embedding_model": "models/text-embedding-004",
+    "GOOGLE_API_KEY": os.getenv("GOOGLE_API_KEY"),
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
