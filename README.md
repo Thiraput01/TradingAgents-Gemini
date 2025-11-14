@@ -1,8 +1,4 @@
-<p align="center">
-  <img src="assets/TauricResearch.png" style="width: 60%; height: auto;">
-</p>
-
-# TradingAgents (Google Gemini Fork)
+# TradingAgents (But for Gemini)
 
 This repository is a fork of [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) and has been adapted to use Google Gemini environments instead of OpenAI.
 
