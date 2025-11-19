@@ -144,6 +144,10 @@ def select_shallow_thinking_agent(provider) -> str:
                 "Gemini 2.5 Pro - Advanced reasoning and problem-solving",
                 "gemini-2.5-pro",
             ),
+            (
+                "Gemini 3 pro preview - Preview version of Gemini 3 pro with enhanced capabilities",
+                "gemini-3-pro-preview",
+            ),
         ],
     }
 
@@ -189,6 +193,10 @@ def select_deep_thinking_agent(provider) -> str:
             (
                 "Gemini 2.5 Pro - Advanced reasoning and problem-solving",
                 "gemini-2.5-pro",
+            ),
+            (
+                "Gemini 3 pro preview - Preview version of Gemini 3 pro with enhanced capabilities",
+                "gemini-3-pro-preview",
             ),
         ],
     }

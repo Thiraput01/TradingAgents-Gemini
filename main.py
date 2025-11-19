@@ -5,8 +5,8 @@ from tradingagents.graph.trading_graph import TradingAgentsGraph
 config = DEFAULT_CONFIG.copy()
 config["llm_provider"] = "google"
 config["backend_url"] = "https://generativelanguage.googleapis.com/v1"
-config["deep_think_llm"] = "gemini-2.0-flash-exp"
-config["quick_think_llm"] = "gemini-2.0-flash-exp"
+config["deep_think_llm"] = "gemini-2.5-pro"
+config["quick_think_llm"] = "gemini-2.5-flash-latest"
 config["max_debate_rounds"] = 1
 config["online_tools"] = True
 
