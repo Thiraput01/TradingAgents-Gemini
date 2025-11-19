@@ -1,11 +1,11 @@
-import time
 import json
+import time
+
 from tradingagents.agents.utils.agent_utils import extract_content_string
 
 
 def create_risk_manager(llm, memory):
     def risk_manager_node(state) -> dict:
-
         company_name = state["company_of_interest"]
 
         history = state["risk_debate_state"]["history"]
@@ -42,7 +42,9 @@ Deliverables:
 
 ---
 
-Focus on actionable insights and continuous improvement. Build on past lessons, critically evaluate all perspectives, and ensure each decision advances better outcomes."""
+Focus on actionable insights and continuous improvement. Build on past lessons, critically evaluate all perspectives, and ensure each decision advances better outcomes.
+**ตอบทั้งหมดนี้เป็นภาษาไทย โดยใช้คำให้เหมาะสมและภาษาที่ดูเป็นธรรมชาติ**
+"""
 
         response = llm.invoke(prompt)
 
