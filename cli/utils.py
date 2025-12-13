@@ -133,6 +133,10 @@ def select_shallow_thinking_agent(provider) -> str:
     SHALLOW_AGENT_OPTIONS = {
         "google": [
             (
+                "Gemini 3 pro preview - Preview version of Gemini 3 pro with enhanced capabilities",
+                "gemini-3-pro-preview",
+            ),
+            (
                 "Gemini Flash Latest - Lastest version of Gemini Flash series",
                 "gemini-flash-latest",
             ),
@@ -145,8 +149,12 @@ def select_shallow_thinking_agent(provider) -> str:
                 "gemini-2.5-pro",
             ),
             (
-                "Gemini 3 pro preview - Preview version of Gemini 3 pro with enhanced capabilities",
-                "gemini-3-pro-preview",
+                "Gemini 2.0 Flash - Balanced performance and speed",
+                "gemini-2.0-flash",
+            ),
+            (
+                "Gemini 2.0 Flash Lite - Cost-effective option for basic tasks",
+                "gemini-2.0-flash-lite",
             ),
         ],
     }
@@ -183,6 +191,10 @@ def select_deep_thinking_agent(provider) -> str:
     DEEP_AGENT_OPTIONS = {
         "google": [
             (
+                "Gemini 3 pro preview - Preview version of Gemini 3 pro with enhanced capabilities",
+                "gemini-3-pro-preview",
+            ),
+            (
                 "Gemini Flash Latest - Lastest version of Gemini Flash series",
                 "gemini-flash-latest",
             ),
@@ -195,8 +207,12 @@ def select_deep_thinking_agent(provider) -> str:
                 "gemini-2.5-pro",
             ),
             (
-                "Gemini 3 pro preview - Preview version of Gemini 3 pro with enhanced capabilities",
-                "gemini-3-pro-preview",
+                "Gemini 2.0 Flash - Balanced performance and speed",
+                "gemini-2.0-flash",
+            ),
+            (
+                "Gemini 2.0 Flash Lite - Cost-effective option for basic tasks",
+                "gemini-2.0-flash-lite",
             ),
         ],
     }
